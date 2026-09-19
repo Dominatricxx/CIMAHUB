@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.sp
 import com.example.cimahub.data.models.*
 import com.example.cimahub.data.repository.MedicalRepository
 import com.example.cimahub.ui.viewmodel.MedicalViewModel
+import com.example.cimahub.ui.viewmodel.UserRole
 import kotlin.math.exp
 import kotlin.math.sin
 
@@ -47,6 +48,7 @@ import kotlin.math.sin
 fun SimulationScreen(caseId: Int?, viewModel: MedicalViewModel, onBack: () -> Unit) {
     val clinicalCase = remember(caseId) { caseId?.let { MedicalRepository.getCaseById(it) } }
     var selectedTab by remember { mutableIntStateOf(0) }
+    val userRole by viewModel.userRole.collectAsState()
 
     if (clinicalCase == null) {
         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -77,10 +79,18 @@ fun SimulationScreen(caseId: Int?, viewModel: MedicalViewModel, onBack: () -> Un
                         Icon(Icons.AutoMirrored.Filled.ExitToApp, contentDescription = "Regresar")
                     }
                 },
+                actions = {
+                    if (userRole == UserRole.Teacher) {
+                        IconButton(onClick = { /* Acción para editar */ }) {
+                            Icon(Icons.Default.Edit, contentDescription = "Editar Caso")
+                        }
+                    }
+                },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color.White.copy(alpha = 0.95f),
                     titleContentColor = Color(0xFF1A8F5A),
-                    navigationIconContentColor = Color(0xFF1A8F5A)
+                    navigationIconContentColor = Color(0xFF1A8F5A),
+                    actionIconContentColor = Color(0xFF1A8F5A)
                 )
             )
         },
@@ -180,17 +190,19 @@ fun CaseInfoPanel(clinicalCase: ClinicalCase) {
 
                 SectionHeader("Signos Vitales (Resumen)", Icons.Default.DeviceThermostat)
                 
-                Row(modifier = Modifier.fillMaxWidth()) {
-                    Column(modifier = Modifier.weight(1f)) {
-                        InfoLabelValue("FC", "${clinicalCase.vitalSigns.heartRate} lpm")
-                        InfoLabelValue("FR", "${clinicalCase.vitalSigns.respiratoryRate} rpm")
+                clinicalCase.vitalSigns?.let { vitals ->
+                    Row(modifier = Modifier.fillMaxWidth()) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            InfoLabelValue("FC", "${vitals.frecuencia_cardiaca} lpm")
+                            InfoLabelValue("FR", "${vitals.frecuencia_respiratoria} rpm")
+                        }
+                        Column(modifier = Modifier.weight(1f)) {
+                            InfoLabelValue("TA", "${vitals.presion_arterial} mmHg")
+                            InfoLabelValue("SAT", "${vitals.saturacion} %")
+                            InfoLabelValue("Temp", "${vitals.temperatura} °C")
+                        }
                     }
-                    Column(modifier = Modifier.weight(1f)) {
-                        InfoLabelValue("TA", "${clinicalCase.vitalSigns.bloodPressure} mmHg")
-                        InfoLabelValue("SAT", "${clinicalCase.vitalSigns.saturation} %")
-                        InfoLabelValue("Temp", "${clinicalCase.vitalSigns.temperature} °C")
-                    }
-                }
+                } ?: Text("Signos vitales no disponibles", style = MaterialTheme.typography.bodyMedium, color = Color.Gray)
             }
         }
     }
@@ -238,7 +250,7 @@ fun StudiesPanel(studies: List<Study>) {
                 ) {
                     Icon(Icons.Default.PictureAsPdf, contentDescription = null, tint = Color.Red, modifier = Modifier.size(48.dp))
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text(study.name, textAlign = TextAlign.Center, style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold)
+                    Text(study.nombre, textAlign = TextAlign.Center, style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold)
                 }
             }
         }
@@ -264,7 +276,7 @@ fun ProceduresPanel(procedures: List<Procedure>) {
                 ) {
                     Icon(Icons.Default.PlayCircleFilled, contentDescription = null, tint = Color.Red, modifier = Modifier.size(40.dp))
                     Spacer(modifier = Modifier.width(16.dp))
-                    Text(procedure.name, color = Color.White, fontWeight = FontWeight.Bold)
+                    Text(procedure.nombre, color = Color.White, fontWeight = FontWeight.Bold)
                 }
             }
         }
@@ -273,6 +285,12 @@ fun ProceduresPanel(procedures: List<Procedure>) {
 
 @Composable
 fun ElectroPanel(clinicalCase: ClinicalCase) {
+    val vitals = clinicalCase.vitalSigns
+    if (vitals == null) {
+        EmptyState("Datos de monitor no disponibles", Icons.Default.MonitorHeart)
+        return
+    }
+
     Column(modifier = Modifier.fillMaxSize().padding(12.dp)) {
         Card(
             modifier = Modifier.fillMaxWidth(),
@@ -292,11 +310,11 @@ fun ElectroPanel(clinicalCase: ClinicalCase) {
                 Row(modifier = Modifier.fillMaxWidth().height(440.dp)) {
                     // Columna Izquierda: Canales de Onda
                     Column(modifier = Modifier.weight(1f).fillMaxHeight()) {
-                        MonitorChannel("I", "ECG", Color(0xFF00FF9F), WaveType.EKG, clinicalCase.vitalSigns.heartRate)
-                        MonitorChannel("SpO₂", "PLETH", Color(0xFF4DB8FF), WaveType.SPO2, clinicalCase.vitalSigns.heartRate)
-                        MonitorChannel("IBP", "ART", Color(0xFFFF6060), WaveType.IBP, clinicalCase.vitalSigns.heartRate)
+                        MonitorChannel("I", "ECG", Color(0xFF00FF9F), WaveType.EKG, vitals.frecuencia_cardiaca)
+                        MonitorChannel("SpO₂", "PLETH", Color(0xFF4DB8FF), WaveType.SPO2, vitals.frecuencia_cardiaca)
+                        MonitorChannel("IBP", "ART", Color(0xFFFF6060), WaveType.IBP, vitals.frecuencia_cardiaca)
                         MonitorChannel("EEG", "BIS", Color(0xFF00E5CC), WaveType.EEG, 60)
-                        MonitorChannel("CO₂", "CAPNO", Color(0xFFFFEE00), WaveType.CO2, clinicalCase.vitalSigns.respiratoryRate)
+                        MonitorChannel("CO₂", "CAPNO", Color(0xFFFFEE00), WaveType.CO2, vitals.frecuencia_respiratoria)
                     }
                     
                     // Columna Derecha: Valores Numéricos
@@ -305,11 +323,11 @@ fun ElectroPanel(clinicalCase: ClinicalCase) {
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.SpaceEvenly
                     ) {
-                        VitalBlock("HR", "${clinicalCase.vitalSigns.heartRate}", Color(0xFF00FF9F), "bpm")
-                        VitalBlock("SpO2", "${clinicalCase.vitalSigns.saturation}", Color(0xFF4DB8FF), "%")
-                        VitalBlock("IBP", clinicalCase.vitalSigns.bloodPressure, Color(0xFFFF6060), "mmHg")
-                        VitalBlock("BIS", "${clinicalCase.vitalSigns.bis}", Color(0xFF00E5CC), "")
-                        VitalBlock("CO₂", "${clinicalCase.vitalSigns.etco2}", Color(0xFFFFEE00), "RR ${clinicalCase.vitalSigns.respiratoryRate}")
+                        VitalBlock("HR", "${vitals.frecuencia_cardiaca}", Color(0xFF00FF9F), "bpm")
+                        VitalBlock("SpO2", "${vitals.saturacion}", Color(0xFF4DB8FF), "%")
+                        VitalBlock("IBP", vitals.presion_arterial, Color(0xFFFF6060), "mmHg")
+                        VitalBlock("BIS", "${vitals.bis}", Color(0xFF00E5CC), "")
+                        VitalBlock("CO₂", "${vitals.etco2}", Color(0xFFFFEE00), "RR ${vitals.frecuencia_respiratoria}")
                     }
                 }
 
@@ -322,7 +340,7 @@ fun ElectroPanel(clinicalCase: ClinicalCase) {
                     Spacer(modifier = Modifier.width(8.dp))
                     Text("CIMED MONITOR", color = Color(0xFF00FF9F), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 1.sp)
                     Spacer(modifier = Modifier.width(16.dp))
-                    Text("${clinicalCase.vitalSigns.heartRate} BPM", color = Color.White, fontSize = 10.sp)
+                    Text("${vitals.frecuencia_cardiaca} BPM", color = Color.White, fontSize = 10.sp)
                     Spacer(modifier = Modifier.weight(1f))
                     Text("SISTEMA ACTIVO", color = Color.Gray, fontSize = 9.sp)
                 }
@@ -376,14 +394,14 @@ fun QuizPanel(questions: List<QuizQuestion>) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text("Pregunta ${currentQuestionIndex + 1} de ${questions.size}", color = Color.Gray, style = MaterialTheme.typography.labelMedium)
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(question.question, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+                Text(question.pregunta, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
                 
                 Spacer(modifier = Modifier.height(16.dp))
                 
-                question.options.forEachIndexed { index, option ->
+                question.opciones.forEachIndexed { index, option ->
                     val color = when {
-                        showExplanation && index == question.correctAnswerIndex -> Color(0xFF1A8F5A)
-                        showExplanation && index == selectedOption && index != question.correctAnswerIndex -> Color.Red
+                        showExplanation && index == question.indice_respuesta_correcta -> Color(0xFF1A8F5A)
+                        showExplanation && index == selectedOption && index != question.indice_respuesta_correcta -> Color.Red
                         selectedOption == index -> Color(0xFF2F50FF)
                         else -> Color.DarkGray
                     }
@@ -404,8 +422,8 @@ fun QuizPanel(questions: List<QuizQuestion>) {
                 if (showExplanation) {
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
-                        text = question.explanation,
-                        color = if (selectedOption == question.correctAnswerIndex) Color(0xFF1A8F5A) else Color.Red,
+                        text = question.explicacion,
+                        color = if (selectedOption == question.indice_respuesta_correcta) Color(0xFF1A8F5A) else Color.Red,
                         style = MaterialTheme.typography.bodySmall,
                         fontWeight = FontWeight.Bold
                     )

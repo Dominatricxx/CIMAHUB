@@ -1,6 +1,5 @@
 package com.example.cimahub.ui.screens
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -28,16 +27,13 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.ui.text.style.TextAlign
 import com.example.cimahub.ui.viewmodel.UserRole
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Warning
-import androidx.compose.ui.platform.LocalContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CasesScreen(
     viewModel: MedicalViewModel,
-    onAddCase: () -> Unit = {},
-    onMenuClick: () -> Unit = {}
+    onAddCase: () -> Unit
 ) {
     val cases by viewModel.cases.collectAsState()
     val folders by viewModel.folders.collectAsState()
@@ -45,49 +41,13 @@ fun CasesScreen(
     val isLoading by viewModel.isLoading.collectAsState()
     val error by viewModel.error.collectAsState()
 
-    val context = LocalContext.current
-
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                navigationIcon = {
-                    IconButton(
-                        onClick = onMenuClick,
-                        modifier = Modifier.padding(start = 8.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Menu,
-                            contentDescription = "Abrir Menú",
-                            tint = Color(0xFF1A8F5A)
-                        )
-                    }
-                },
                 title = { 
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text("CI", color = Color(0xFF1A8F5A), fontWeight = FontWeight.Bold)
                         Text("MED", color = Color(0xFFFFB300), fontWeight = FontWeight.Bold)
-                    }
-                },
-                actions = {
-                    if (userRole == UserRole.Teacher) {
-                        IconButton(
-                            onClick = { 
-                                onAddCase()
-                                Toast.makeText(context, "Función para añadir caso clínico", Toast.LENGTH_SHORT).show()
-                            },
-                            modifier = Modifier
-                                .padding(end = 16.dp)
-                                .size(40.dp)
-                                .background(Color(0xFF5CABFF), CircleShape)
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Add, 
-                                contentDescription = "Añadir Caso",
-                                tint = Color.White
-                            )
-                        }
-                    } else {
-                        Spacer(modifier = Modifier.width(56.dp))
                     }
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
@@ -95,7 +55,18 @@ fun CasesScreen(
                 )
             )
         },
-        floatingActionButton = {},
+        floatingActionButton = {
+            if (userRole == UserRole.Teacher) {
+                FloatingActionButton(
+                    onClick = onAddCase,
+                    onClick = { /* Acción para añadir caso */ },
+                    containerColor = Color(0xFF1A8F5A),
+                    contentColor = Color.White
+                ) {
+                    Icon(Icons.Default.Add, contentDescription = "Añadir Caso")
+                }
+            }
+        },
         containerColor = Color.Transparent
     ) { paddingValues ->
         Box(modifier = Modifier.fillMaxSize().padding(paddingValues)) {
@@ -218,7 +189,7 @@ fun CaseCard(clinicalCase: ClinicalCase, onClick: () -> Unit) {
             Icon(
                 Icons.Default.PlayCircle, 
                 contentDescription = "Ver detalles",
-                tint = Color(0xFFFFC400),
+                tint = Color(0xFF1A8F5A),
                 modifier = Modifier.size(32.dp)
             )
         }

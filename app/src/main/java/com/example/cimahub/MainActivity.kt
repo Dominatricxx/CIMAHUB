@@ -120,6 +120,7 @@ fun MainScreen() {
 
     CaseDetailModal(
         selectedCase = selectedCase,
+        visionMatrix = visionMatrix,
         onDismiss = { viewModel.selectCase(null) },
         onStartSimulation = { caseId ->
             viewModel.selectCase(null)

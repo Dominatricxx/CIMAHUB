@@ -47,7 +47,7 @@ fun LoginScreen(onLoginSuccess: (UserRole) -> Unit) {
 
             Spacer(modifier = Modifier.weight(1f))
 
-            // Restaurar el logotipo del borrego cimarrón médico centrado y de tamaño mediano
+            // Añadir el logotipo del borrego cimarrón médico centrado y de tamaño mediano
             Image(
                 painter = painterResource(id = R.drawable.logo_cimahub),
                 contentDescription = "Logo CIMAHUB",

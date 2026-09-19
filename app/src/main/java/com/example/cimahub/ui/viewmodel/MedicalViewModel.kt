@@ -98,6 +98,22 @@ class MedicalViewModel : ViewModel() {
         _visionType.value = type
     }
 
+    fun addCase(clinicalCase: ClinicalCase, vitalSigns: VitalSigns, onResult: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            try {
+                MedicalRepository.insertCase(clinicalCase, vitalSigns)
+                refreshCases()
+                onResult(true)
+            } catch (e: Exception) {
+                _error.value = "Error al añadir caso: ${e.message}"
+                onResult(false)
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
     fun onHotspotClicked(hotspotId: String) {
         val clinicalCase = MedicalRepository.getCases().find { it.hotspotId == hotspotId }
         if (clinicalCase != null) {

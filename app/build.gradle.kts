@@ -9,8 +9,17 @@ plugins {
 val secretsProperties = Properties().apply {
     val secretsFile = rootProject.file("secrets.properties")
     if (secretsFile.exists()) {
+
+        secretsFile.inputStream().use { load(it) }
+    }
+}
+
+fun getSecret(key: String): String {
+    return secretsProperties.getProperty(key) ?: ""
+
         load(secretsFile.inputStream())
     }
+
 }
 
 android {
@@ -28,8 +37,13 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         
+
+        buildConfigField("String", "SUPABASE_URL", "\"${getSecret("SUPABASE_URL")}\"")
+        buildConfigField("String", "SUPABASE_KEY", "\"${getSecret("SUPABASE_KEY")}\"")
+
         buildConfigField("String", "SUPABASE_URL", "\"${secretsProperties.getProperty("SUPABASE_URL")}\"")
         buildConfigField("String", "SUPABASE_KEY", "\"${secretsProperties.getProperty("SUPABASE_KEY")}\"")
+
     }
 
     buildTypes {

@@ -3,6 +3,7 @@ package com.example.cimahub.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cimahub.data.models.ClinicalCase
+import com.example.cimahub.data.models.VitalSigns
 import com.example.cimahub.data.repository.MedicalRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -95,6 +96,22 @@ class MedicalViewModel : ViewModel() {
 
     fun setVisionType(type: VisionType) {
         _visionType.value = type
+    }
+
+    fun addCase(clinicalCase: ClinicalCase, vitalSigns: VitalSigns, onResult: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            try {
+                MedicalRepository.insertCase(clinicalCase, vitalSigns)
+                refreshCases()
+                onResult(true)
+            } catch (e: Exception) {
+                _error.value = "Error al añadir caso: ${e.message}"
+                onResult(false)
+            } finally {
+                _isLoading.value = false
+            }
+        }
     }
 
     fun onHotspotClicked(hotspotId: String) {

@@ -32,7 +32,8 @@ import androidx.compose.material.icons.filled.Warning
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CasesScreen(
-    viewModel: MedicalViewModel
+    viewModel: MedicalViewModel,
+    onAddCase: () -> Unit
 ) {
     val cases by viewModel.cases.collectAsState()
     val folders by viewModel.folders.collectAsState()
@@ -57,6 +58,7 @@ fun CasesScreen(
         floatingActionButton = {
             if (userRole == UserRole.Teacher) {
                 FloatingActionButton(
+                    onClick = onAddCase,
                     onClick = { /* Acción para añadir caso */ },
                     containerColor = Color(0xFF1A8F5A),
                     contentColor = Color.White

@@ -192,6 +192,11 @@ fun CaseInfoPanel(clinicalCase: ClinicalCase) {
                 clinicalCase.vitalSigns?.let { vitals ->
                     Row(modifier = Modifier.fillMaxWidth()) {
                         Column(modifier = Modifier.weight(1f)) {
+                            InfoLabelValue("FC", "${vitals.frecuencia_cardiaca} lpm")
+                            InfoLabelValue("FR", "${vitals.frecuencia_respiratoria} rpm")
+                        }
+                        Column(modifier = Modifier.weight(1f)) {
+                            InfoLabelValue("TA", "${vitals.presion_arterial} mmHg")
                             InfoLabelValue("FC", "${vitals.heartRate} lpm")
                             InfoLabelValue("FR", "${vitals.respiratoryRate} rpm")
                         }
@@ -309,6 +314,11 @@ fun ElectroPanel(clinicalCase: ClinicalCase) {
                 Row(modifier = Modifier.fillMaxWidth().height(440.dp)) {
                     // Columna Izquierda: Canales de Onda
                     Column(modifier = Modifier.weight(1f).fillMaxHeight()) {
+                        MonitorChannel("I", "ECG", Color(0xFF00FF9F), WaveType.EKG, vitals.frecuencia_cardiaca)
+                        MonitorChannel("SpO₂", "PLETH", Color(0xFF4DB8FF), WaveType.SPO2, vitals.frecuencia_cardiaca)
+                        MonitorChannel("IBP", "ART", Color(0xFFFF6060), WaveType.IBP, vitals.frecuencia_cardiaca)
+                        MonitorChannel("EEG", "BIS", Color(0xFF00E5CC), WaveType.EEG, 60)
+                        MonitorChannel("CO₂", "CAPNO", Color(0xFFFFEE00), WaveType.CO2, vitals.frecuencia_respiratoria)
                         MonitorChannel("I", "ECG", Color(0xFF00FF9F), WaveType.EKG, vitals.heartRate)
                         MonitorChannel("SpO₂", "PLETH", Color(0xFF4DB8FF), WaveType.SPO2, vitals.heartRate)
                         MonitorChannel("IBP", "ART", Color(0xFFFF6060), WaveType.IBP, vitals.heartRate)
@@ -322,6 +332,11 @@ fun ElectroPanel(clinicalCase: ClinicalCase) {
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.SpaceEvenly
                     ) {
+                        VitalBlock("HR", "${vitals.frecuencia_cardiaca}", Color(0xFF00FF9F), "bpm")
+                        VitalBlock("SpO2", "${vitals.saturacion}", Color(0xFF4DB8FF), "%")
+                        VitalBlock("IBP", vitals.presion_arterial, Color(0xFFFF6060), "mmHg")
+                        VitalBlock("BIS", "${vitals.bis}", Color(0xFF00E5CC), "")
+                        VitalBlock("CO₂", "${vitals.etco2}", Color(0xFFFFEE00), "RR ${vitals.frecuencia_respiratoria}")
                         VitalBlock("HR", "${vitals.heartRate}", Color(0xFF00FF9F), "bpm")
                         VitalBlock("SpO2", "${vitals.saturacion}", Color(0xFF4DB8FF), "%")
                         VitalBlock("IBP", vitals.bloodPressure, Color(0xFFFF6060), "mmHg")
@@ -339,6 +354,7 @@ fun ElectroPanel(clinicalCase: ClinicalCase) {
                     Spacer(modifier = Modifier.width(8.dp))
                     Text("CIMED MONITOR", color = Color(0xFF00FF9F), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 1.sp)
                     Spacer(modifier = Modifier.width(16.dp))
+                    Text("${vitals.frecuencia_cardiaca} BPM", color = Color.White, fontSize = 10.sp)
                     Text("${vitals.heartRate} BPM", color = Color.White, fontSize = 10.sp)
                     Spacer(modifier = Modifier.weight(1f))
                     Text("SISTEMA ACTIVO", color = Color.Gray, fontSize = 9.sp)
@@ -399,8 +415,8 @@ fun QuizPanel(questions: List<QuizQuestion>) {
                 
                 question.opciones.forEachIndexed { index, option ->
                     val color = when {
-                        showExplanation && index == question.correctAnswerIndex -> Color(0xFF1A8F5A)
-                        showExplanation && index == selectedOption && index != question.correctAnswerIndex -> Color.Red
+                        showExplanation && index == question.indice_respuesta_correcta -> Color(0xFF1A8F5A)
+                        showExplanation && index == selectedOption && index != question.indice_respuesta_correcta -> Color.Red
                         selectedOption == index -> Color(0xFF2F50FF)
                         else -> Color.DarkGray
                     }
@@ -422,6 +438,7 @@ fun QuizPanel(questions: List<QuizQuestion>) {
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
                         text = question.explicacion,
+                        color = if (selectedOption == question.indice_respuesta_correcta) Color(0xFF1A8F5A) else Color.Red,
                         color = if (selectedOption == question.correctAnswerIndex) Color(0xFF1A8F5A) else Color.Red,
                         style = MaterialTheme.typography.bodySmall,
                         fontWeight = FontWeight.Bold

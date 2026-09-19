@@ -32,9 +32,9 @@ fun UabcHyperDynamicBackground(modifier: Modifier = Modifier) {
         val w = size.width
         val h = size.height
 
-        // Partícula 1: Verde UABC - Movimiento suave y sutil
-        val p1X = w / 2 + (w * 0.4f) * cos(time * 0.8f)
-        val p1Y = h / 2 + (h * 0.3f) * sin(time * 0.5f)
+        // Partícula 1: Verde UABC - Movimiento suave y sutil (Usamos coeficientes enteros 1x y 1x para un bucle perfecto)
+        val p1X = w / 2 + (w * 0.4f) * cos(time)
+        val p1Y = h / 2 + (h * 0.3f) * sin(time)
         drawCircle(
             brush = Brush.radialGradient(
                 colors = listOf(UabcGreen.copy(alpha = 0.4f), Color.Transparent),
@@ -45,9 +45,9 @@ fun UabcHyperDynamicBackground(modifier: Modifier = Modifier) {
             radius = w * 1.1f
         )
 
-        // Partícula 2: Oro UABC - Movimiento pausado
-        val p2X = w / 2 + (w * 0.35f) * sin(time * 0.6f)
-        val p2Y = h / 2 + (h * 0.4f) * cos(time * 0.7f)
+        // Partícula 2: Oro UABC - Movimiento pausado (Intercambiamos sin/cos y usamos entero 1x para el ciclo cerrado)
+        val p2X = w / 2 + (w * 0.35f) * sin(time)
+        val p2Y = h / 2 + (h * 0.4f) * cos(time)
         drawCircle(
             brush = Brush.radialGradient(
                 colors = listOf(UabcGold.copy(alpha = 0.35f), Color.Transparent),
@@ -58,9 +58,9 @@ fun UabcHyperDynamicBackground(modifier: Modifier = Modifier) {
             radius = w * 1.0f
         )
 
-        // Partícula 3: Azul UABC - Movimiento perimetral lento
-        val p3X = w / 2 + (w * 0.5f) * cos(time * 0.3f)
-        val p3Y = h / 2 + (h * 0.5f) * sin(time * 0.3f)
+        // Partícula 3: Azul UABC - Movimiento en órbita invertida (Usamos entero 1x)
+        val p3X = w / 2 + (w * 0.5f) * cos(-time)
+        val p3Y = h / 2 + (h * 0.5f) * sin(-time)
         drawCircle(
             brush = Brush.radialGradient(
                 colors = listOf(UabcBlue.copy(alpha = 0.3f), Color.Transparent),

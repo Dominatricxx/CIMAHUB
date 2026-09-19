@@ -16,17 +16,11 @@ val secretsProperties = Properties().apply {
 
 fun getSecret(key: String): String {
     return secretsProperties.getProperty(key) ?: ""
-
-        load(secretsFile.inputStream())
-    }
-
 }
 
 android {
     namespace = "com.example.cimahub"
-    compileSdk {
-        version = release(37)
-    }
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.example.cimahub"
@@ -40,9 +34,6 @@ android {
 
         buildConfigField("String", "SUPABASE_URL", "\"${getSecret("SUPABASE_URL")}\"")
         buildConfigField("String", "SUPABASE_KEY", "\"${getSecret("SUPABASE_KEY")}\"")
-
-        buildConfigField("String", "SUPABASE_URL", "\"${secretsProperties.getProperty("SUPABASE_URL")}\"")
-        buildConfigField("String", "SUPABASE_KEY", "\"${secretsProperties.getProperty("SUPABASE_KEY")}\"")
 
     }
 

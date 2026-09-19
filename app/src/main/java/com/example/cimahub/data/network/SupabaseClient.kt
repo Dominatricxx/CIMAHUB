@@ -1,6 +1,7 @@
 package com.example.cimahub.data.network
 
 import android.util.Log
+=======
 import com.example.cimahub.BuildConfig
 import io.github.jan.supabase.createSupabaseClient
 import io.github.jan.supabase.postgrest.Postgrest

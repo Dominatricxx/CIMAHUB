@@ -117,6 +117,7 @@ fun CaseDetailContent(
                     clinicalCase.vitalSigns?.let { 
                         VitalSignsGrid(it)
                     } ?: Text("Signos vitales no disponibles", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    } ?: Text("Signos vitales no disponibles", style = MaterialTheme.typography.bodyMedium, color = Color.Gray)
                 }
             }
         }

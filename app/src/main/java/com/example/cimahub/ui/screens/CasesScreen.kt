@@ -59,6 +59,7 @@ fun CasesScreen(
             if (userRole == UserRole.Teacher) {
                 FloatingActionButton(
                     onClick = onAddCase,
+                    onClick = { /* Acción para añadir caso */ },
                     containerColor = Color(0xFF1A8F5A),
                     contentColor = Color.White
                 ) {

@@ -12,18 +12,30 @@ data class VitalSigns(
     @SerialName("saturacion") val saturacion: Int = 0,
     @SerialName("bis") val bis: Int = 0,
     @SerialName("etco2") val etco2: Int = 0
+
+    @SerialName("frecuencia_cardiaca") val heartRate: Int = 0,
+    @SerialName("presion_arterial") val bloodPressure: String = "0/0",
+    @SerialName("frecuencia_respiratoria") val respiratoryRate: Int = 0,
+    val temperatura: Float = 0f,
+    val saturacion: Int = 0,
+    val bis: Int = 0,
+    val etco2: Int = 0
 )
 
 @Serializable
 data class Study(
     @SerialName("nombre") val nombre: String = "",
     @SerialName("url") val url: String = ""
+    val nombre: String = "",
+    val url: String = ""
 )
 
 @Serializable
 data class Procedure(
     @SerialName("nombre") val nombre: String = "",
     @SerialName("url_video") val url_video: String = ""
+    val nombre: String = "",
+    @SerialName("url_video") val videoUrl: String = ""
 )
 
 @Serializable
@@ -32,6 +44,10 @@ data class QuizQuestion(
     @SerialName("opciones") val opciones: List<String> = emptyList(),
     @SerialName("indice_respuesta_correcta") val indice_respuesta_correcta: Int = 0,
     @SerialName("explicacion") val explicacion: String = ""
+    val pregunta: String = "",
+    val opciones: List<String> = emptyList(),
+    @SerialName("indice_respuesta_correcta") val correctAnswerIndex: Int = 0,
+    val explicacion: String = ""
 )
 
 @Serializable
@@ -41,6 +57,11 @@ data class ClinicalCase(
     @SerialName("resumen") val summary: String = "",
     @SerialName("carpeta") val folder: String = "Sin carpeta",
     @SerialName("anamnesis") val anamnesis: String = "",
+    val id: Int,
+    @SerialName("titulo") val title: String,
+    @SerialName("resumen") val summary: String = "",
+    @SerialName("carpeta") val folder: String = "Sin carpeta",
+    val anamnesis: String = "",
     @SerialName("exploracion_fisica") val physicalExamination: String = "",
     @SerialName("url_simulacion") val simulationUrl: String = "",
     @SerialName("id_punto_interes") val hotspotId: String? = null,
@@ -55,6 +76,10 @@ data class ClinicalCase(
     // Corregido: signos_vitales es un objeto (1:1), NO una lista
     @SerialName("signos_vitales") val vitalSigns: VitalSigns? = null,
     
+    // Cambiado de List a Objeto único (1:1)
+    @SerialName("signos_vitales") val vitalSigns: VitalSigns? = null,
+    
+    // Estos se mantienen como listas (1:N)
     @SerialName("estudios") val studies: List<Study> = emptyList(),
     @SerialName("procedimientos") val procedures: List<Procedure> = emptyList(),
     @SerialName("preguntas_quiz") val quiz: List<QuizQuestion> = emptyList()

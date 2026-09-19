@@ -26,7 +26,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -198,6 +197,11 @@ fun CaseInfoPanel(clinicalCase: ClinicalCase) {
                         }
                         Column(modifier = Modifier.weight(1f)) {
                             InfoLabelValue("TA", "${vitals.presion_arterial} mmHg")
+                            InfoLabelValue("FC", "${vitals.heartRate} lpm")
+                            InfoLabelValue("FR", "${vitals.respiratoryRate} rpm")
+                        }
+                        Column(modifier = Modifier.weight(1f)) {
+                            InfoLabelValue("TA", "${vitals.bloodPressure} mmHg")
                             InfoLabelValue("SAT", "${vitals.saturacion} %")
                             InfoLabelValue("Temp", "${vitals.temperatura} °C")
                         }
@@ -315,6 +319,11 @@ fun ElectroPanel(clinicalCase: ClinicalCase) {
                         MonitorChannel("IBP", "ART", Color(0xFFFF6060), WaveType.IBP, vitals.frecuencia_cardiaca)
                         MonitorChannel("EEG", "BIS", Color(0xFF00E5CC), WaveType.EEG, 60)
                         MonitorChannel("CO₂", "CAPNO", Color(0xFFFFEE00), WaveType.CO2, vitals.frecuencia_respiratoria)
+                        MonitorChannel("I", "ECG", Color(0xFF00FF9F), WaveType.EKG, vitals.heartRate)
+                        MonitorChannel("SpO₂", "PLETH", Color(0xFF4DB8FF), WaveType.SPO2, vitals.heartRate)
+                        MonitorChannel("IBP", "ART", Color(0xFFFF6060), WaveType.IBP, vitals.heartRate)
+                        MonitorChannel("EEG", "BIS", Color(0xFF00E5CC), WaveType.EEG, 60)
+                        MonitorChannel("CO₂", "CAPNO", Color(0xFFFFEE00), WaveType.CO2, vitals.respiratoryRate)
                     }
                     
                     // Columna Derecha: Valores Numéricos
@@ -328,6 +337,11 @@ fun ElectroPanel(clinicalCase: ClinicalCase) {
                         VitalBlock("IBP", vitals.presion_arterial, Color(0xFFFF6060), "mmHg")
                         VitalBlock("BIS", "${vitals.bis}", Color(0xFF00E5CC), "")
                         VitalBlock("CO₂", "${vitals.etco2}", Color(0xFFFFEE00), "RR ${vitals.frecuencia_respiratoria}")
+                        VitalBlock("HR", "${vitals.heartRate}", Color(0xFF00FF9F), "bpm")
+                        VitalBlock("SpO2", "${vitals.saturacion}", Color(0xFF4DB8FF), "%")
+                        VitalBlock("IBP", vitals.bloodPressure, Color(0xFFFF6060), "mmHg")
+                        VitalBlock("BIS", "${vitals.bis}", Color(0xFF00E5CC), "")
+                        VitalBlock("CO₂", "${vitals.etco2}", Color(0xFFFFEE00), "RR ${vitals.respiratoryRate}")
                     }
                 }
 
@@ -341,6 +355,7 @@ fun ElectroPanel(clinicalCase: ClinicalCase) {
                     Text("CIMED MONITOR", color = Color(0xFF00FF9F), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 1.sp)
                     Spacer(modifier = Modifier.width(16.dp))
                     Text("${vitals.frecuencia_cardiaca} BPM", color = Color.White, fontSize = 10.sp)
+                    Text("${vitals.heartRate} BPM", color = Color.White, fontSize = 10.sp)
                     Spacer(modifier = Modifier.weight(1f))
                     Text("SISTEMA ACTIVO", color = Color.Gray, fontSize = 9.sp)
                 }
@@ -424,6 +439,7 @@ fun QuizPanel(questions: List<QuizQuestion>) {
                     Text(
                         text = question.explicacion,
                         color = if (selectedOption == question.indice_respuesta_correcta) Color(0xFF1A8F5A) else Color.Red,
+                        color = if (selectedOption == question.correctAnswerIndex) Color(0xFF1A8F5A) else Color.Red,
                         style = MaterialTheme.typography.bodySmall,
                         fontWeight = FontWeight.Bold
                     )

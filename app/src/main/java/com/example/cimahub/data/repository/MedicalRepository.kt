@@ -64,4 +64,8 @@ object MedicalRepository {
             throw e
         }
     }
+
+    fun getCases(): List<ClinicalCase> = _allCases.value
+    fun getCaseById(id: Int): ClinicalCase? = _allCases.value.find { it.id == id }
+    fun getFolders(): List<String> = _allCases.value.map { it.folder }.distinct().sortedBy { if (it == "Sin carpeta") 1 else 0 }
 }

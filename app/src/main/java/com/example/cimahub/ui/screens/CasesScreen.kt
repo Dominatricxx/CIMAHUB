@@ -23,6 +23,12 @@ import androidx.compose.ui.unit.dp
 import com.example.cimahub.data.models.ClinicalCase
 import com.example.cimahub.ui.viewmodel.MedicalViewModel
 
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.ui.text.style.TextAlign
+import com.example.cimahub.ui.viewmodel.UserRole
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Warning
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CasesScreen(
@@ -30,6 +36,9 @@ fun CasesScreen(
 ) {
     val cases by viewModel.cases.collectAsState()
     val folders by viewModel.folders.collectAsState()
+    val userRole by viewModel.userRole.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
+    val error by viewModel.error.collectAsState()
 
     Scaffold(
         topBar = {
@@ -45,25 +54,70 @@ fun CasesScreen(
                 )
             )
         },
+        floatingActionButton = {
+            if (userRole == UserRole.Teacher) {
+                FloatingActionButton(
+                    onClick = { /* Acción para añadir caso */ },
+                    containerColor = Color(0xFF1A8F5A),
+                    contentColor = Color.White
+                ) {
+                    Icon(Icons.Default.Add, contentDescription = "Añadir Caso")
+                }
+            }
+        },
         containerColor = Color.Transparent
     ) { paddingValues ->
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .padding(horizontal = 16.dp),
-            contentPadding = PaddingValues(vertical = 16.dp)
-        ) {
-            folders.forEach { folderName ->
-                item {
-                    FolderHeader(folderName, cases.count { it.folder == folderName })
-                }
-                items(cases.filter { it.folder == folderName }) { clinicalCase ->
-                    CaseCard(clinicalCase) {
-                        viewModel.selectCase(clinicalCase)
+        Box(modifier = Modifier.fillMaxSize().padding(paddingValues)) {
+            if (isLoading) {
+                CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.Center),
+                    color = Color(0xFF1A8F5A)
+                )
+            } else if (error != null) {
+                Column(
+                    modifier = Modifier.align(Alignment.Center).padding(24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Icon(Icons.Default.Warning, contentDescription = null, tint = Color.Red, modifier = Modifier.size(48.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(error!!, color = Color.Gray, textAlign = TextAlign.Center)
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Button(
+                        onClick = { viewModel.refreshCases() },
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1A8F5A))
+                    ) {
+                        Text("Reintentar")
                     }
                 }
-                item { Spacer(modifier = Modifier.height(20.dp)) }
+            } else if (cases.isEmpty()) {
+                Column(
+                    modifier = Modifier.align(Alignment.Center),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text("No se encontraron casos", color = Color.Gray)
+                    Button(onClick = { viewModel.refreshCases() }) {
+                        Text("Reintentar")
+                    }
+                }
+            }
+
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp),
+                contentPadding = PaddingValues(vertical = 16.dp)
+            ) {
+                folders.forEach { folderName ->
+                    item {
+                        FolderHeader(folderName, cases.count { it.folder == folderName })
+                    }
+                    items(cases.filter { it.folder == folderName }) { clinicalCase ->
+                        CaseCard(clinicalCase) {
+                            viewModel.selectCase(clinicalCase)
+                        }
+                    }
+                    item { Spacer(modifier = Modifier.height(20.dp)) }
+                }
             }
         }
     }

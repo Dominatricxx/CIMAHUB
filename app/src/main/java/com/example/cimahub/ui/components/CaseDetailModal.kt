@@ -88,7 +88,10 @@ fun CaseDetailContent(
                         color = Color(0xFF1A8F5A),
                         modifier = Modifier.padding(vertical = 8.dp)
                     )
-                    VitalSignsGrid(clinicalCase.vitalSigns)
+                    
+                    clinicalCase.vitalSigns?.let { 
+                        VitalSignsGrid(it)
+                    } ?: Text("Signos vitales no disponibles", style = MaterialTheme.typography.bodyMedium, color = Color.Gray)
                 }
             }
         }
@@ -141,8 +144,8 @@ fun VitalSignsGrid(vitals: VitalSigns) {
             }
             Spacer(modifier = Modifier.height(8.dp))
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                VitalItem("Temp", "${vitals.temperature} °C")
-                VitalItem("SpO2", "${vitals.saturation} %")
+                VitalItem("Temp", "${vitals.temperatura} °C")
+                VitalItem("SpO2", "${vitals.saturacion} %")
                 Box(Modifier.weight(1f))
             }
         }

@@ -1,7 +1,7 @@
 package com.example.cimahub.ui.screens
 
 import androidx.compose.animation.core.*
-import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -9,19 +9,16 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.cimahub.ui.components.*
-import com.example.cimahub.ui.components.UabcHyperDynamicBackground
 import com.example.cimahub.ui.theme.*
+import com.example.cimahub.ui.viewmodel.UserRole
 
 @Composable
-fun LoginScreen(onLoginSuccess: () -> Unit) {
+fun LoginScreen(onLoginSuccess: (UserRole) -> Unit) {
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -30,7 +27,6 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(64.dp))
-            // ... (resto igual)
 
             Text(
                 text = "CIMAHUB FCITEC",
@@ -90,19 +86,46 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
                         color = UabcGreen
                     )
 
-                    Spacer(modifier = Modifier.height(48.dp))
+                    Spacer(modifier = Modifier.height(32.dp))
+                    
+                    Text(
+                        text = "¿Cómo deseas ingresar?",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color.Gray,
+                        fontWeight = FontWeight.Medium
+                    )
 
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // Botón para Estudiantes
                     Button(
-                        onClick = onLoginSuccess,
-                        modifier = Modifier.fillMaxWidth().height(60.dp),
+                        onClick = { onLoginSuccess(UserRole.Student) },
+                        modifier = Modifier.fillMaxWidth().height(56.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = UabcGreen),
                         shape = RoundedCornerShape(12.dp)
                     ) {
                         Text(
-                            text = "ACCEDER AL SISTEMA",
+                            text = "SOY ESTUDIANTE",
                             color = Color.White,
                             fontWeight = FontWeight.ExtraBold,
-                            fontSize = 18.sp
+                            fontSize = 16.sp
+                        )
+                    }
+                    
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    // Botón para Docentes
+                    OutlinedButton(
+                        onClick = { onLoginSuccess(UserRole.Teacher) },
+                        modifier = Modifier.fillMaxWidth().height(56.dp),
+                        shape = RoundedCornerShape(12.dp),
+                        border = BorderStroke(2.dp, UabcGreen),
+                        colors = ButtonDefaults.outlinedButtonColors(contentColor = UabcGreen)
+                    ) {
+                        Text(
+                            text = "SOY DOCENTE",
+                            fontWeight = FontWeight.ExtraBold,
+                            fontSize = 16.sp
                         )
                     }
                 }

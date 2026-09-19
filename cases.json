@@ -1,0 +1,327 @@
+[
+  {
+    "id": 27,
+    "title": "FIEBRE",
+    "summary": "Caso clínico de fiebre en carpeta ECOE.",
+    "folder": "ECOE",
+    "anamnesis": "wksjksjfk",
+    "physicalExamination": "No especificada en el registro.",
+    "vitalSigns": {
+      "heartRate": 0,
+      "bloodPressure": "0/0",
+      "respiratoryRate": 0,
+      "temperature": 0.0,
+      "saturation": 0
+    },
+    "simulationUrl": "simulacion.php?id=27"
+  },
+  {
+    "id": 23,
+    "title": "Apendicitis",
+    "summary": "Carlos M., 22 años. Dolor en FID y signos apendiculares positivos.",
+    "folder": "Sin carpeta",
+    "anamnesis": "Varón de 22 años acude por dolor periumbilical de 18h que migra a FID hace 6h. Náuseas, anorexia y escalofríos.",
+    "physicalExamination": "Signo de McBurney (+), Blumberg (+), Rovsing (+), Psoas (+). Ruidos peristálticos disminuidos.",
+    "vitalSigns": {
+      "heartRate": 105,
+      "bloodPressure": "120/75",
+      "respiratoryRate": 20,
+      "temperature": 38.3,
+      "saturation": 98
+    },
+    "simulationUrl": "simulacion.php?id=23",
+    "hotspotId": "appendix",
+    "patientName": "Carlos M.",
+    "patientSex": "Masculino",
+    "patientAge": 22,
+    "patientWeight": 72.0,
+    "patientHeight": 176,
+    "patientMotive": "Dolor periumbilical de 18h que migra a FID hace 6h. Náuseas, anorexia y escalofríos.",
+    "patientHistory": "Sin enfermedades crónicas ni cirugías previas. Alergias negadas."
+  },
+  {
+    "id": 20,
+    "title": "APNEA",
+    "summary": "Masculino de 55 años con ronquidos intensos y somnolencia diurna.",
+    "folder": "Sin carpeta",
+    "anamnesis": "Cuadro de 3 años con ronquidos intensos, despertares con sensación de ahogo y apneas presenciadas. Cefalea matutina y somnolencia.",
+    "physicalExamination": "Circunferencia de cuello 46 cm.",
+    "vitalSigns": {
+      "heartRate": 96,
+      "bloodPressure": "160/100",
+      "respiratoryRate": 24,
+      "temperature": 36.0,
+      "saturation": 95,
+      "bis": 98,
+      "etco2": 35
+    },
+    "simulationUrl": "simulacion.php?id=20",
+    "hotspotId": "throat",
+    "patientName": "Juan Pérez",
+    "patientSex": "Masculino",
+    "patientAge": 55,
+    "patientWeight": 95.0,
+    "patientHeight": 175,
+    "patientMotive": "Ronquidos intensos y somnolencia diurna.",
+    "patientHistory": "Hipertensión arterial, obesidad grado I.",
+    "studies": [
+      { "name": "Radiografía de Tórax", "url": "url_rx" },
+      { "name": "Analítica de Sangre", "url": "url_lab" }
+    ],
+    "procedures": [
+      { "name": "Exploración de Vía Aérea", "videoUrl": "url_video" }
+    ],
+    "quiz": [
+      {
+        "question": "¿Cuál es el principal factor de riesgo en este paciente?",
+        "options": ["Edad", "Obesidad", "Sexo", "Altura"],
+        "correctAnswerIndex": 1,
+        "explanation": "La obesidad es el factor de riesgo más importante para el SAHOS."
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "title": "Derrame pleural",
+    "summary": "Masculino de 80 años con IR y disnea progresiva.",
+    "folder": "Sin carpeta",
+    "anamnesis": "Paciente con DM, Insuficiencia Renal en hemodiálisis e hipertensión. Presenta tos de 5 días, disnea a leves esfuerzos y dolor en hemitórax derecho.",
+    "physicalExamination": "Afebril, dolor pleurítico.",
+    "vitalSigns": {
+      "heartRate": 85,
+      "bloodPressure": "130/80",
+      "respiratoryRate": 22,
+      "temperature": 36.5,
+      "saturation": 92
+    },
+    "simulationUrl": "simulacion.php?id=7",
+    "hotspotId": "lungs",
+    "patientSex": "Masculino",
+    "patientAge": 80,
+    "patientHistory": "Diabetes (insulina glargina 20 ui am), insuficiencia renal en hemodiálisis, eritropoyetina 4000 ui dos veces por semana, hipertensión (perindopril, amlodipino con indapamida)."
+  },
+  {
+    "id": 9,
+    "title": "Dislipidemia",
+    "summary": "Femenino de 52 años con xantomas en manos.",
+    "folder": "Sin carpeta",
+    "anamnesis": "Antecedente de HAS e Hipotiroidismo. Presenta cefalea, fatiga, tinnitus y dolor ardoroso en MMII.",
+    "physicalExamination": "Protuberancias amarillas-naranja (xantomas) en ambas manos.",
+    "vitalSigns": {
+      "heartRate": 75,
+      "bloodPressure": "140/90",
+      "respiratoryRate": 18,
+      "temperature": 36.6,
+      "saturation": 98
+    },
+    "simulationUrl": "simulacion.php?id=9",
+    "patientSex": "Femenino",
+    "patientAge": 52,
+    "patientHistory": "Hipertensión de 10 años (Telmisartan plus), Hipotiroidismo (100 mcg), menopausia (Tibolona 1x1)."
+  },
+  {
+    "id": 10,
+    "title": "Emergencia hipertensiva",
+    "summary": "Masculino de 58 años con alteración del estado de conciencia.",
+    "folder": "Sin carpeta",
+    "anamnesis": "Cefalea de 5 días, pérdidas de conocimiento, vómitos y visión borrosa.",
+    "physicalExamination": "Glasgow alterado: respuesta verbal inapropiada, apertura ocular al dolor, retirada motriz.",
+    "vitalSigns": {
+      "heartRate": 90,
+      "bloodPressure": "210/120",
+      "respiratoryRate": 20,
+      "temperature": 36.5,
+      "saturation": 96
+    },
+    "simulationUrl": "simulacion.php?id=10",
+    "hotspotId": "brain",
+    "patientSex": "Masculino",
+    "patientAge": 58,
+    "patientHistory": "Dislipidemia (Atorvastatina/Ezetemiba), Hipertensión (Perindopril/Indapamida)."
+  },
+  {
+    "id": 6,
+    "title": "EPOC 2",
+    "summary": "Mujer de 72 años con disnea grado III mMRC.",
+    "folder": "Sin carpeta",
+    "anamnesis": "Exfumadora (35 paquetes/año). Aumento progresivo de disnea que le impide caminar más de 100m. Tos escasa matutina.",
+    "physicalExamination": "Sin edemas en MMII ni ortopnea.",
+    "vitalSigns": {
+      "heartRate": 88,
+      "bloodPressure": "135/85",
+      "respiratoryRate": 22,
+      "temperature": 36.4,
+      "saturation": 88
+    },
+    "simulationUrl": "simulacion.php?id=6",
+    "hotspotId": "lungs",
+    "patientSex": "Femenino",
+    "patientAge": 72,
+    "patientHistory": "Exfumadora (35 paquetes-año), HAS, Dislipemia. Tratamiento: Enalapril 20 mg, simvastatina 20 mg, tiotropio, AAS 100 mg."
+  },
+  {
+    "id": 16,
+    "title": "Escenario 1",
+    "summary": "Marcela, 58 años. Posible Hipotiroidismo.",
+    "folder": "Sin carpeta",
+    "anamnesis": "Refiere agotamiento, caída de pelo, intolerancia al frío, olvidos y tristeza profunda.",
+    "physicalExamination": "Voz ronca, piel seca y edema facial.",
+    "vitalSigns": {
+      "heartRate": 54,
+      "bloodPressure": "110/70",
+      "respiratoryRate": 20,
+      "temperature": 35.9,
+      "saturation": 98
+    },
+    "simulationUrl": "simulacion.php?id=16",
+    "hotspotId": "thyroid",
+    "patientName": "Marcela",
+    "patientSex": "Femenino",
+    "patientAge": 58,
+    "patientWeight": 82.0,
+    "patientHeight": 155,
+    "patientMotive": "Agotamiento, caída de pelo, intolerancia al frío, olvidos y tristeza profunda.",
+    "patientHistory": "Niega DM, HAS, Tabaquismo, Drogas."
+  },
+  {
+    "id": 4,
+    "title": "Fiebre a determinar",
+    "summary": "Paciente pediátrico de 4 años con fiebre persistente.",
+    "folder": "Sin carpeta",
+    "anamnesis": "Fiebre de 38.5°C de 4 días de evolución. Inició amoxicilina hace 2 días sin mejoría y agrega diarrea.",
+    "physicalExamination": "Dermatitis en área anal.",
+    "vitalSigns": {
+      "heartRate": 120,
+      "bloodPressure": "90/60",
+      "respiratoryRate": 28,
+      "temperature": 38.5,
+      "saturation": 97
+    },
+    "simulationUrl": "simulacion.php?id=4",
+    "patientSex": "Masculino",
+    "patientAge": 4,
+    "patientMotive": "Fiebre de 38.5°C de 4 días de evolución."
+  },
+  {
+    "id": 13,
+    "title": "HG",
+    "summary": "Femenino de 36 años, embarazo 36 semanas con preeclampsia.",
+    "folder": "Sin carpeta",
+    "anamnesis": "Embarazo de 36 semanas, Diabetes Gestacional. Cifras tensionales de 160/90 mmHg.",
+    "physicalExamination": "Edema facial y en MMII (++), reflejos con clonus, dolor en epigastrio. FCF 176 lpm.",
+    "vitalSigns": {
+      "heartRate": 95,
+      "bloodPressure": "160/90",
+      "respiratoryRate": 22,
+      "temperature": 37.0,
+      "saturation": 98
+    },
+    "simulationUrl": "simulacion.php?id=13",
+    "hotspotId": "uterus",
+    "patientSex": "Femenino",
+    "patientAge": 36,
+    "patientHistory": "Hipertensión gestacional en primer embarazo, Diabetes Gestacional (Priscilla White clase A1)."
+  },
+  {
+    "id": 22,
+    "title": "Infarto Agudo al Miocardio",
+    "summary": "Dolor torácico opresivo 9/10 y signo de Levine.",
+    "folder": "Sin carpeta",
+    "anamnesis": "Inicio súbito en situación de estrés. Dolor retroesternal irradiado a brazo izquierdo, diaforesis.",
+    "physicalExamination": "Signo de Levine (+), R3 presente, crepitantes bibasales.",
+    "vitalSigns": {
+      "heartRate": 106,
+      "bloodPressure": "150/90",
+      "respiratoryRate": 26,
+      "temperature": 36.0,
+      "saturation": 90
+    },
+    "simulationUrl": "simulacion.php?id=22",
+    "hotspotId": "heart",
+    "patientMotive": "Dolor torácico opresivo 9/10, sudoración profusa e irradiación a hombro y brazo izquierdo."
+  },
+  {
+    "id": 21,
+    "title": "Insuficiencia Cardiaca",
+    "summary": "Laura M., 56 años. Disnea progresiva NYHA II-III.",
+    "folder": "Sin carpeta",
+    "anamnesis": "Disnea de medianos esfuerzos, ortopnea y tos seca nocturna. Antecedente de HAS y Obesidad I.",
+    "physicalExamination": "Estertores crepitantes finos bilaterales, R3 (galope ventricular).",
+    "vitalSigns": {
+      "heartRate": 108,
+      "bloodPressure": "150/95",
+      "respiratoryRate": 22,
+      "temperature": 36.7,
+      "saturation": 93
+    },
+    "simulationUrl": "simulacion.php?id=21",
+    "hotspotId": "heart",
+    "patientName": "Laura M.",
+    "patientSex": "Femenino",
+    "patientAge": 56,
+    "patientWeight": 82.0,
+    "patientHeight": 158,
+    "patientHistory": "HAS (8 años, Amlodipino), Obesidad Grado I."
+  },
+  {
+    "id": 18,
+    "title": "Meniré",
+    "summary": "Vértigo súbito y plenitud ótica.",
+    "folder": "Sin carpeta",
+    "anamnesis": "Vértigo rotatorio súbito, náuseas, plenitud ótica y tinnitus en oído derecho.",
+    "physicalExamination": "Nistagmo horizontal hacia la izquierda, Romberg (+), marcha con lateropulsión.",
+    "vitalSigns": {
+      "heartRate": 80,
+      "bloodPressure": "120/80",
+      "respiratoryRate": 18,
+      "temperature": 36.5,
+      "saturation": 99
+    },
+    "simulationUrl": "simulacion.php?id=18",
+    "hotspotId": "ear",
+    "patientMotive": "Vértigo rotatorio objetivo de inicio súbito, náuseas, plenitud ótica y tinnitus."
+  },
+  {
+    "id": 8,
+    "title": "Neumonía",
+    "summary": "Femenino de 28 años con pérdida de peso y fiebre.",
+    "folder": "Sin carpeta",
+    "anamnesis": "Fiebre 38.5°C, pérdida de 8kg en 3 meses. Antecedente de hospitalizaciones por NAC.",
+    "physicalExamination": " AGO: G3 P3. Palidez cutánea.",
+    "vitalSigns": {
+      "heartRate": 110,
+      "bloodPressure": "110/70",
+      "respiratoryRate": 24,
+      "temperature": 38.5,
+      "saturation": 94
+    },
+    "simulationUrl": "simulacion.php?id=8",
+    "hotspotId": "lungs",
+    "patientSex": "Femenino",
+    "patientAge": 28,
+    "patientWeight": 0.0,
+    "patientHistory": "Hospitalizaciones previas por NAC. Niega cirugías y enfermedades crónicas. AGO: G3 P3."
+  },
+  {
+    "id": 17,
+    "title": "OMA",
+    "summary": "Mateo, 4 años. Otalgia y fiebre.",
+    "folder": "Sin carpeta",
+    "anamnesis": "Fiebre de 72h (38.8°C), irritabilidad, hipoacusia subjetiva (sube volumen TV). Antecedente de rinitis alérgica.",
+    "physicalExamination": "Faringe hiperémica, membrana timpánica abombada (inferido).",
+    "vitalSigns": {
+      "heartRate": 115,
+      "bloodPressure": "100/60",
+      "respiratoryRate": 24,
+      "temperature": 38.8,
+      "saturation": 98
+    },
+    "simulationUrl": "simulacion.php?id=17",
+    "hotspotId": "ear",
+    "patientName": "Mateo",
+    "patientSex": "Masculino",
+    "patientAge": 4,
+    "patientMotive": "Fiebre de 3 días de evolución.",
+    "patientHistory": "Dermatitis atópica, rinitis alérgica estacional."
+  }
+]

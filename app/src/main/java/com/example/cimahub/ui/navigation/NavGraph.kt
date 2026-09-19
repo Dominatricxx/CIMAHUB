@@ -29,8 +29,8 @@ fun NavGraph(
         startDestination = Screen.Login.route
     ) {
         composable(Screen.Login.route) {
-            LoginScreen(onLoginSuccess = {
-                viewModel.login()
+            LoginScreen(onLoginSuccess = { role ->
+                viewModel.login(role)
                 navController.navigate(Screen.Cases.route) {
                     popUpTo(Screen.Login.route) { inclusive = true }
                 }

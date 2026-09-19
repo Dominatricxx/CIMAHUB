@@ -153,7 +153,7 @@ fun MainScreen() {
                 if (isLoggedIn && currentRoute != Screen.Login.route) {
                     ModalDrawerSheet(
                         drawerContainerColor = Color.White,
-                        drawerShape = RoundedCornerShape(topEnd = 24.dp, bottomEnd = 24.dp),
+                        drawerShape = RoundedCornerShape(topEnd = 0.dp, bottomEnd = 0.dp),
                         modifier = Modifier.width(300.dp).fillMaxHeight()
                     ) {
                         Spacer(modifier = Modifier.height(48.dp))
@@ -339,23 +339,10 @@ fun MainScreen() {
                         shape = RoundedCornerShape(if (currentRoute == Screen.Login.route) 0.dp else 24.dp),
                         color = if (currentRoute == Screen.Login.route) Color.Transparent else Color.White
                     ) {
-                        NavGraph(navController = navController, viewModel = viewModel)
-                    }
-                }
-
-                // Botón de Menú Hamburguesa en la esquina superior izquierda
-                if (isLoggedIn && currentRoute != Screen.Login.route) {
-                    IconButton(
-                        onClick = { scope.launch { drawerState.open() } },
-                        modifier = Modifier
-                            .padding(top = 48.dp, start = 24.dp)
-                            .size(48.dp)
-                            .background(Color.White.copy(alpha = 0.8f), CircleShape)
-                    ) {
-                        Icon(
-                            Icons.Default.Menu,
-                            contentDescription = "Abrir Menú",
-                            tint = Color(0xFF1A8F5A)
+                        NavGraph(
+                            navController = navController, 
+                            viewModel = viewModel,
+                            onMenuClick = { scope.launch { drawerState.open() } }
                         )
                     }
                 }

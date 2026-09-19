@@ -12,13 +12,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.foundation.Image
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.example.cimahub.R
 import com.example.cimahub.ui.viewmodel.MedicalViewModel
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.ui.text.font.FontWeight
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -28,7 +31,6 @@ fun AtlasScreen(viewModel: MedicalViewModel) {
     val state = rememberTransformableState { zoomChange, offsetChange, _ ->
         scale *= zoomChange
         offset += offsetChange
-        viewModel.setZoomLevel(scale)
     }
 
     Scaffold(
@@ -56,7 +58,6 @@ fun AtlasScreen(viewModel: MedicalViewModel) {
                 .transformable(state = state)
                 .pointerInput(Unit) {
                     detectTapGestures { tapOffset ->
-                        // Coordenadas normalizadas aproximadas para el Canvas de 400dp
                         val normalizedX = tapOffset.x / 400.dp.toPx()
                         val normalizedY = tapOffset.y / 400.dp.toPx()
                         
@@ -100,36 +101,38 @@ private fun detectHotspot(x: Float, y: Float, scale: Float, viewModel: MedicalVi
 
 @Composable
 fun AtlasCanvas(scale: Float) {
-    Canvas(modifier = Modifier.size(400.dp)) {
-        val center = Offset(size.width / 2, size.height / 2)
-        
-        // Nivel 1: Cuerpo General
-        drawRect(
-            color = Color.LightGray.copy(alpha = 0.3f),
-            topLeft = Offset(size.width * 0.25f, size.height * 0.05f),
-            size = Size(size.width * 0.5f, size.height * 0.9f),
-            style = Stroke(width = 2f)
-        )
-
-        // Nivel 2: Órganos Regionales
-        if (scale > 1.2f) {
-            // Cabeza/Cerebro
-            drawCircle(Color.Magenta.copy(alpha = 0.2f), radius = 30f, center = center.copy(y = center.y * 0.2f))
-            // Pulmones
-            drawOval(Color.Blue.copy(alpha = 0.3f), topLeft = Offset(size.width * 0.3f, size.height * 0.3f), size = Size(60f, 100f))
-            drawOval(Color.Blue.copy(alpha = 0.3f), topLeft = Offset(size.width * 0.55f, size.height * 0.3f), size = Size(60f, 100f))
-            // Corazón
-            drawCircle(Color.Red.copy(alpha = 0.4f), radius = 25f, center = center.copy(x = center.x * 0.9f, y = center.y * 0.8f))
+    Box(modifier = Modifier.size(400.dp)) {
+        // Capa dinámica basada en el nivel de Zoom
+        val (imageRes, contentDesc) = when {
+            scale > 2.5f -> R.drawable.area_craneo to "Área del Cráneo Detallada"
+            scale > 1.2f -> R.drawable.area_torso to "Área del Torso Regional"
+            else -> R.drawable.panorama_completo to "Cuerpo Humano Panorama Completo"
         }
 
-        // Nivel 3: Patologías Específicas
-        if (scale > 2.5f) {
-            // Tiroides
-            drawOval(Color(0xFFE91E63).copy(alpha = 0.6f), topLeft = Offset(size.width * 0.47f, size.height * 0.21f), size = Size(20f, 15f))
-            // Apéndice inflamado
-            drawCircle(Color.Red, radius = 10f, center = Offset(size.width * 0.65f, size.height * 0.75f))
-            // Utero (HG)
-            drawOval(Color(0xFF9C27B0).copy(alpha = 0.5f), topLeft = Offset(size.width * 0.45f, size.height * 0.7f), size = Size(40f, 50f))
+        Image(
+            painter = painterResource(id = imageRes),
+            contentDescription = contentDesc,
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Fit
+        )
+
+        Canvas(modifier = Modifier.fillMaxSize()) {
+            val center = Offset(size.width / 2, size.height / 2)
+            
+            // Nivel 2: Órganos Regionales (Solo visibles en Torso o Panorama)
+            if (scale > 1.2f && scale <= 2.5f) {
+                // Pulmones
+                drawOval(Color.Blue.copy(alpha = 0.3f), topLeft = Offset(size.width * 0.3f, size.height * 0.3f), size = Size(60f, 100f))
+                drawOval(Color.Blue.copy(alpha = 0.3f), topLeft = Offset(size.width * 0.55f, size.height * 0.3f), size = Size(60f, 100f))
+                // Corazón
+                drawCircle(Color.Red.copy(alpha = 0.4f), radius = 25f, center = center.copy(x = center.x * 0.9f, y = center.y * 0.8f))
+            }
+
+            // Nivel 3: Patologías Específicas (Solo visibles en Cráneo)
+            if (scale > 2.5f) {
+                // Cerebro / Hotspots del cráneo
+                drawCircle(Color.Magenta.copy(alpha = 0.2f), radius = 40f, center = Offset(size.width * 0.5f, size.height * 0.4f))
+            }
         }
     }
 }
@@ -144,7 +147,6 @@ fun ZoomLevelIndicator(scale: Float, modifier: Modifier = Modifier) {
     Surface(
         modifier = modifier,
         color = color.copy(alpha = 0.1f),
-        border = Stroke(width = 1f).let { null }, // placeholder
         shape = RoundedCornerShape(50.dp)
     ) {
         Text(

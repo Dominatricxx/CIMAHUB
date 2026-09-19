@@ -43,7 +43,7 @@ fun CaseDetailModal(
                 clinicalCase = selectedCase,
                 onStartSimulation = {
                     showBottomSheet = false
-                    onStartSimulation(selectedCase.id)
+                    onStartSimulation(selectedCase.id ?: 0)
                 }
             )
         }
@@ -101,7 +101,7 @@ fun CaseDetailContent(
         Button(
             onClick = onStartSimulation,
             modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1A8F5A)),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00723F)),
             shape = RoundedCornerShape(50.dp)
         ) {
             Icon(Icons.Default.PlayCircle, contentDescription = null)
@@ -138,9 +138,9 @@ fun VitalSignsGrid(vitals: VitalSigns) {
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                VitalItem("TA", vitals.bloodPressure)
-                VitalItem("FC", "${vitals.heartRate} lpm")
-                VitalItem("FR", "${vitals.respiratoryRate} rpm")
+                VitalItem("TA", vitals.presion_arterial)
+                VitalItem("FC", "${vitals.frecuencia_cardiaca} lpm")
+                VitalItem("FR", "${vitals.frecuencia_respiratoria} rpm")
             }
             Spacer(modifier = Modifier.height(8.dp))
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {

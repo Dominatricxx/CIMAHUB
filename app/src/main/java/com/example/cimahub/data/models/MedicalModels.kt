@@ -5,13 +5,13 @@ import kotlinx.serialization.SerialName
 
 @Serializable
 data class VitalSigns(
-    @SerialName("frecuencia_cardiaca") val heartRate: Int = 0,
-    @SerialName("presion_arterial") val bloodPressure: String = "0/0",
-    @SerialName("frecuencia_respiratoria") val respiratoryRate: Int = 0,
-    val temperatura: Float = 0f,
-    val saturacion: Int = 0,
-    val bis: Int = 0,
-    val etco2: Int = 0
+    @SerialName("frecuencia_cardiaca") val frecuencia_cardiaca: Int = 0,
+    @SerialName("presion_arterial") val presion_arterial: String = "0/0",
+    @SerialName("frecuencia_respiratoria") val frecuencia_respiratoria: Int = 0,
+    @SerialName("temperatura") val temperatura: Float = 0f,
+    @SerialName("saturacion") val saturacion: Int = 0,
+    @SerialName("bis") val bis: Int = 0,
+    @SerialName("etco2") val etco2: Int = 0
 )
 
 @Serializable
@@ -36,11 +36,11 @@ data class QuizQuestion(
 
 @Serializable
 data class ClinicalCase(
-    val id: Int,
+    val id: Int? = null,
     @SerialName("titulo") val title: String,
     @SerialName("resumen") val summary: String = "",
     @SerialName("carpeta") val folder: String = "Sin carpeta",
-    val anamnesis: String = "",
+    @SerialName("anamnesis") val anamnesis: String = "",
     @SerialName("exploracion_fisica") val physicalExamination: String = "",
     @SerialName("url_simulacion") val simulationUrl: String = "",
     @SerialName("id_punto_interes") val hotspotId: String? = null,

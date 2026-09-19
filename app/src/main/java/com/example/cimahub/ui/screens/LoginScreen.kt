@@ -2,6 +2,7 @@ package com.example.cimahub.ui.screens
 
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,9 +12,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.cimahub.R
 import com.example.cimahub.ui.theme.*
 import com.example.cimahub.ui.viewmodel.UserRole
 
@@ -40,6 +43,17 @@ fun LoginScreen(onLoginSuccess: (UserRole) -> Unit) {
                 color = UabcGoldLight,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Light
+            )
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            // Restaurar el logotipo del borrego cimarrón médico centrado y de tamaño mediano
+            Image(
+                painter = painterResource(id = R.drawable.logo_cimahub),
+                contentDescription = "Logo CIMAHUB",
+                modifier = Modifier
+                    .size(160.dp)
+                    .padding(vertical = 8.dp)
             )
 
             Spacer(modifier = Modifier.weight(1f))

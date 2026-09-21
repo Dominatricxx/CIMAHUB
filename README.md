@@ -53,8 +53,8 @@ El objetivo: ofrecer una forma más práctica e interactiva de aprender, donde e
 ---
 
 ## Estructura del repositorio
-
-```
+<div align="center"> <picture> <source media="(prefers-color-scheme: dark)" srcset="./assets/structure-dark.svg"> <img src="./assets/structure-light.svg" width="700" alt="Estructura del repositorio de CIMAHUB: app Android, versión web, portada, ilustraciones del atlas, casos de ejemplo y archivos de Gradle"/> </picture> </div> <details> <summary>Ver como texto</summary>
+  
 CIMAHUB/
 ├── app/                                # App Android
 │   └── src/main/
@@ -69,6 +69,7 @@ CIMAHUB/
 │       │   └── MainActivity.kt
 │       ├── assets/cases.json           # Casos de ejemplo
 │       └── res/drawable/               # Logo e imágenes del atlas
+├── assets/                             # Diagrama de arquitectura
 ├── css/                                # Estilos de la versión web
 ├── js/simulacion.js                    # Lógica de la simulación web
 ├── CIMAHUB LOG.html                    # Portada de CIMAHUB FCITEC
@@ -78,10 +79,9 @@ CIMAHUB/
 ├── cases.json                          # Casos de ejemplo
 ├── gradle/                             # Wrapper de Gradle
 └── build.gradle.kts
-```
 
 ---
-
+</details>
 ## ¿Cómo funciona una simulación?
 
 Cada caso clínico vive en Supabase como un registro principal (`casos_clinicos`) con cuatro tipos de información relacionada. Al abrir un caso, la app o la web lo descargan completo y lo presentan en cinco pestañas:

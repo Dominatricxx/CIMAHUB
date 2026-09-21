@@ -2,7 +2,7 @@
 
 <img src="./app/src/main/res/drawable/logo_cimahub.png" width="160" alt="Logo de CIMAHUB"/>
 
-<h1>CIMAHUB</h1>
+<h1>CIMED</h1>
 
 <p>
 <b>Simulador de casos clínicos para estudiantes de ciencias de la salud</b><br/>
@@ -17,9 +17,9 @@ Un nuevo método de aprendizaje
 
 </div>
 
-## ¿Qué es CIMAHUB?
+## ¿Qué es CIMED?
 
-**CIMAHUB** es un simulador de casos clínicos pensado para estudiantes de ciencias de la salud. En lugar de estudiar un caso solo desde el texto, el estudiante entra a una simulación donde revisa al paciente, sus signos vitales en un monitor, los estudios y maniobras asociados, y comprueba lo aprendido con un quiz al final.
+**CIMED** es un simulador de casos clínicos pensado para estudiantes de ciencias de la salud. En lugar de estudiar un caso solo desde el texto, el estudiante entra a una simulación donde revisa al paciente, sus signos vitales en un monitor, los estudios y maniobras asociados, y comprueba lo aprendido con un quiz al final.
 
 El sistema tiene dos caras que comparten la misma base de datos en **Supabase**: una **app Android** (Kotlin + Jetpack Compose) y una **versión web** (HTML, CSS y JavaScript). Los docentes pueden dar de alta nuevos casos y los estudiantes los consultan desde cualquiera de las dos.
 

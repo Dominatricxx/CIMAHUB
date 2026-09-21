@@ -46,28 +46,7 @@ El objetivo: ofrecer una forma más práctica e interactiva de aprender, donde e
 
 ## Arquitectura
 
-```
-                 ┌───────────────────────────────────┐
-                 │        Supabase (PostgreSQL)      │
-                 │                                   │
-                 │  casos_clinicos                   │
-                 │   ├── signos_vitales   (1:1)      │
-                 │   ├── estudios         (1:N)      │
-                 │   ├── procedimientos   (1:N)      │
-                 │   └── preguntas_quiz   (1:N)      │
-                 └─────────────────┬─────────────────┘
-                                   │
-                ┌──────────────────┴──────────────────┐
-                │                                     │
-     ┌──────────▼──────────┐               ┌──────────▼──────────┐
-     │     App Android     │               │     Versión web     │
-     │ Kotlin + Compose    │               │ HTML + CSS + JS     │
-     │ ViewModel + Repo    │               │ supabase-js         │
-     │ Login · Casos       │               │ Casos por carpeta   │
-     │ Atlas · Simulación  │               │ Simulación de caso  │
-     │ Nuevo caso (docente)│               │                     │
-     └─────────────────────┘               └─────────────────────┘
-```
+<div align="center"> <img src="./assets/architecture CIMAHUB.svg" width="75%" alt="Arquitectura de CIMAHUB: Supabase (PostgreSQL) con la tabla casos_clinicos y sus tablas relacionadas, conectado a la app Android y a la versión web"/> </div>
 
 <sub>Tanto la app como la web descargan cada caso completo con una sola consulta a Supabase (el caso más sus signos vitales, estudios, procedimientos y preguntas). En Android, un ViewModel expone el estado a las pantallas de Compose a través de un repositorio; en la web, un script carga el caso y rellena la simulación.</sub>
 

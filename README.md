@@ -31,7 +31,7 @@ El objetivo: ofrecer una forma más práctica e interactiva de aprender, donde e
 
 ## Características
 
-- **Catálogo de casos por carpetas** (por ejemplo, ECOE), con el conteo de casos de cada carpeta
+- **Catálogo de casos por carpetas** con el conteo de casos de cada carpeta
 - **Simulación en cinco pestañas:** Caso, Estudios, Maniobras, Electro y Quiz
 - **Monitor de signos vitales (CIMED MONITOR)** con cinco canales animados: ECG, SpO2, presión arterial invasiva, EEG/BIS y capnografía, ajustados a los valores del caso
 - **Ficha completa del paciente:** nombre, sexo, edad, peso, altura, motivo de consulta, antecedentes y signos vitales (FC, TA, FR, temperatura, SpO2, BIS y EtCO2)

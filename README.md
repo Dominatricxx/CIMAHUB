@@ -135,6 +135,14 @@ python -m http.server 8000
 
 ---
 
+## Porcentaje de lenguajes aplicados
+
+<div align="center">
+<img src="./assets/cimed-languages-chart.svg" width="50%" alt="grafica"/>
+</div>
+
+---
+
 <div align="center">
 
 Hecho por [**Dominic Escobar**](https://github.com/Dominatricxx)

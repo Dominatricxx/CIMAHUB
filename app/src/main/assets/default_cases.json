@@ -1,0 +1,127 @@
+[
+  {
+    "id": 1,
+    "titulo": "SÍNDROME CORONARIO AGUDO (SCA)",
+    "resumen": "Paciente masculino de 58 años que acude a urgencias por dolor torácico opresivo de 2 horas de evolución.",
+    "carpeta": "ECOE",
+    "anamnesis": "Paciente refiere inicio súbito de dolor retroesternal urente u opresivo mientras realizaba un esfuerzo moderado. El dolor se irradia a mandíbula y brazo izquierdo, acompañado de diaforesis y náuseas. Antecedentes de hipertensión arterial no controlada y tabaquismo activo.",
+    "exploracion_fisica": "Paciente consciente, pálido, diaforético, con facies de angustia. Campos pulmonares murmullos vesiculares conservados sin estertores. Ruidos cardíacos rítmicos, de buena intensidad, no se auscultan soplos ni galope.",
+    "url_simulacion": "",
+    "id_punto_interes": "heart",
+    "nombre_paciente": "Juan Carlos Pérez",
+    "sexo_paciente": "Masculino",
+    "edad_paciente": "58",
+    "peso_paciente": "84.5",
+    "altura_paciente": "172",
+    "motivo_paciente": "Dolor torácico opresivo e irradiado a brazo izquierdo",
+    "antecedentes_paciente": "Hipertensión Arterial Sistémica (10 años de evolución), Tabaquismo (1 paquete/día por 20 años).",
+    "signos_vitales": {
+      "frecuencia_cardiaca": 110,
+      "presion_arterial": "150/95",
+      "frecuencia_respiratoria": 22,
+      "temperatura": 36.6,
+      "saturacion": 93,
+      "bis": 98,
+      "etco2": 35
+    },
+    "estudios": [
+      {
+        "nombre": "Electrocardiograma de 12 derivaciones",
+        "url": ""
+      },
+      {
+        "nombre": "Troponina I de alta sensibilidad",
+        "url": ""
+      }
+    ],
+    "procedimientos": [
+      {
+        "nombre": "Colocación de catéter venoso periférico",
+        "url_video": ""
+      },
+      {
+        "nombre": "Administración de oxigenoterapia por puntas nasales",
+        "url_video": ""
+      }
+    ],
+    "preguntas_quiz": [
+      {
+        "pregunta": "¿Cuál es el diagnóstico electrocardiográfico más probable en un SCA con elevación del segmento ST en V1-V4?",
+        "opciones": [
+          "Infarcto de cara inferior",
+          "Infarto anteroseptal",
+          "Isquemia subendocárdica lateral",
+          "Bloqueo de rama izquierda"
+        ],
+        "indice_respuesta_correcta": 1,
+        "explicacion": "La elevación del ST en las derivaciones precordiales V1 a V4 corresponde a la cara anteroseptal del ventrículo izquierdo, irrigada por la arteria descendente anterior."
+      },
+      {
+        "pregunta": "¿Cuál es la dosis inicial de ácido acetilsalicílico (AAS) recomendada en la fase aguda del SCA?",
+        "opciones": [
+          "100 mg por vía oral",
+          "162-325 mg masticados",
+          "500 mg por vía intravenosa",
+          "75 mg sublingual"
+        ],
+        "indice_respuesta_correcta": 1,
+        "explicacion": "Se recomienda una dosis de carga de 162 a 325 mg de AAS no entérico y masticado para lograr una rápida inhibición plaquetaria."
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "titulo": "CRISIS AS MÁTICA AGUDA",
+    "resumen": "Paciente femenina de 24 años con dificultad respiratoria progresiva y sibilancias audibles.",
+    "carpeta": "Respiratorio",
+    "anamnesis": "Inició hace 12 horas tras exposición a polvo ambiental. Presenta tos seca constante, opresión torácica y disnea que le impide completar frases cortas. Utilizó salbutamol de rescate 4 inhalaciones sin mejoría.",
+    "exploracion_fisica": "Aumento del trabajo respiratorio con tiraje intercostal ligero. Murmullo vesicular disminuido globalmente con sibilancias espiratorias bilaterales difusas.",
+    "url_simulacion": "",
+    "id_punto_interes": "lungs",
+    "nombre_paciente": "María Elena Gómez",
+    "sexo_paciente": "Femenino",
+    "edad_paciente": "24",
+    "peso_paciente": "58.0",
+    "altura_paciente": "163",
+    "motivo_paciente": "Disnea y sibilancias severas",
+    "antecedentes_paciente": "Asma bronquial alérgica desde la infancia. Rinitis alérgica estacional.",
+    "signos_vitales": {
+      "frecuencia_cardiaca": 118,
+      "presion_arterial": "125/80",
+      "frecuencia_respiratoria": 28,
+      "temperatura": 36.8,
+      "saturacion": 90,
+      "bis": 98,
+      "etco2": 32
+    },
+    "estudios": [
+      {
+        "nombre": "Gasometría arterial",
+        "url": ""
+      },
+      {
+        "nombre": "Radiografía de tórax AP y lateral",
+        "url": ""
+      }
+    ],
+    "procedimientos": [
+      {
+        "nombre": "Nebulización con Salbutamol + Bromuro de Ipratropio",
+        "url_video": ""
+      }
+    ],
+    "preguntas_quiz": [
+      {
+        "pregunta": "¿Cuál es el tratamiento farmacológico de primera línea en una crisis asmática moderada a severa?",
+        "opciones": [
+          "Antibióticos de amplio espectro",
+          "Agonistas beta-2 adrenérgicos de acción corta (SABA) + Corticoides sistémicos",
+          "Antihistamínicos H1 intravenosos",
+          "Teofilina de liberación prolongada"
+        ],
+        "indice_respuesta_correcta": 1,
+        "explicacion": "Los SABA broncodilatan rápidamente y los glucocorticoides sistémicos reducen la inflamación de la vía aérea y previenen recaídas."
+      }
+    ]
+  }
+]

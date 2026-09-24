@@ -22,5 +22,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "CIMAHUB"
+rootProject.name = "CIMED"
 include(":app")

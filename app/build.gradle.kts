@@ -19,11 +19,11 @@ fun getSecret(key: String): String {
 }
 
 android {
-    namespace = "com.example.cimahub"
+    namespace = "com.example.cimed"
     compileSdk = 37
 
     defaultConfig {
-        applicationId = "com.example.cimahub"
+        applicationId = "com.example.cimed"
         minSdk = 24
         targetSdk = 35
         versionCode = 1

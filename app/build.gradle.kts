@@ -25,7 +25,7 @@ android {
     defaultConfig {
         applicationId = "com.example.cimahub"
         minSdk = 24
-        targetSdk = 37
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -70,7 +70,7 @@ dependencies {
     
     // Supabase
     implementation("io.github.jan-tennert.supabase:postgrest-kt:3.0.3")
-    implementation("io.ktor:ktor-client-android:3.0.0")
+    implementation("io.ktor:ktor-client-okhttp:3.0.0")
     
     testImplementation(libs.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))

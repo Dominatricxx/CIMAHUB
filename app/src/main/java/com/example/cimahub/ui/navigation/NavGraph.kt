@@ -2,8 +2,10 @@ package com.example.cimahub.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.example.cimahub.ui.screens.AddCaseScreen
 import com.example.cimahub.ui.screens.AtlasScreen
 import com.example.cimahub.ui.screens.CasesScreen
@@ -15,7 +17,9 @@ sealed class Screen(val route: String) {
     object Login : Screen("login")
     object Cases : Screen("cases_catalog")
     object Atlas : Screen("anatomical_atlas")
-    object AddCase : Screen("add_case")
+    object AddCase : Screen("add_case?caseId={caseId}") {
+        fun createRoute(caseId: Int? = null) = if (caseId != null) "add_case?caseId=$caseId" else "add_case"
+    }
     object Simulation : Screen("simulation/{caseId}") {
         fun createRoute(caseId: Int) = "simulation/$caseId"
     }
@@ -43,12 +47,23 @@ fun NavGraph(
             CasesScreen(
                 viewModel = viewModel, 
                 onMenuClick = onMenuClick,
-                onAddCase = { navController.navigate(Screen.AddCase.route) }
+                onAddCase = { navController.navigate(Screen.AddCase.createRoute(null)) },
+                onEditCase = { caseId -> navController.navigate(Screen.AddCase.createRoute(caseId)) }
             )
         }
-        composable(Screen.AddCase.route) {
+        composable(
+            route = Screen.AddCase.route,
+            arguments = listOf(navArgument("caseId") {
+                type = NavType.StringType
+                nullable = true
+                defaultValue = null
+            })
+        ) { backStackEntry ->
+            val caseIdStr = backStackEntry.arguments?.getString("caseId")
+            val caseId = caseIdStr?.toIntOrNull()
             AddCaseScreen(
                 viewModel = viewModel,
+                caseId = caseId,
                 onBack = { navController.popBackStack() }
             )
         }
@@ -57,7 +72,12 @@ fun NavGraph(
         }
         composable(Screen.Simulation.route) { backStackEntry ->
             val caseId = backStackEntry.arguments?.getString("caseId")?.toIntOrNull()
-            SimulationScreen(caseId = caseId, viewModel = viewModel, onBack = { navController.popBackStack() })
+            SimulationScreen(
+                caseId = caseId, 
+                viewModel = viewModel, 
+                onBack = { navController.popBackStack() },
+                onEditCase = { id -> navController.navigate(Screen.AddCase.createRoute(id)) }
+            )
         }
     }
 }

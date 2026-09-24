@@ -1,5 +1,6 @@
 package com.example.cimahub.ui.screens
 
+import android.widget.Toast
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.BorderStroke
@@ -30,6 +31,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -44,7 +46,12 @@ import kotlin.math.sin
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SimulationScreen(caseId: Int?, viewModel: MedicalViewModel, onBack: () -> Unit) {
+fun SimulationScreen(
+    caseId: Int?, 
+    viewModel: MedicalViewModel, 
+    onBack: () -> Unit,
+    onEditCase: (Int) -> Unit
+) {
     val clinicalCase = remember(caseId) { caseId?.let { MedicalRepository.getCaseById(it) } }
     var selectedTab by remember { mutableIntStateOf(0) }
     val userRole by viewModel.userRole.collectAsState()
@@ -80,7 +87,7 @@ fun SimulationScreen(caseId: Int?, viewModel: MedicalViewModel, onBack: () -> Un
                 },
                 actions = {
                     if (userRole == UserRole.Teacher) {
-                        IconButton(onClick = { /* Acción para editar */ }) {
+                        IconButton(onClick = { onEditCase(clinicalCase.id ?: 0) }) {
                             Icon(Icons.Default.Edit, contentDescription = "Editar Caso")
                         }
                     }
@@ -132,7 +139,7 @@ fun SimulationScreen(caseId: Int?, viewModel: MedicalViewModel, onBack: () -> Un
             Crossfade(targetState = selectedTab, label = "tab_fade") { tabIndex ->
                 when (tabIndex) {
                     0 -> CaseInfoPanel(clinicalCase)
-                    1 -> StudiesPanel(clinicalCase.studies)
+                    1 -> StudiesPanel(caseId = clinicalCase.id, viewModel = viewModel, studies = clinicalCase.studies)
                     2 -> ProceduresPanel(clinicalCase.procedures)
                     3 -> ElectroPanel(clinicalCase)
                     4 -> QuizPanel(clinicalCase.quiz)
@@ -225,33 +232,106 @@ fun InfoLabelValue(label: String, value: String) {
 }
 
 @Composable
-fun StudiesPanel(studies: List<Study>) {
-    if (studies.isEmpty()) {
-        EmptyState("No hay estudios disponibles", Icons.Default.FolderOff)
-        return
-    }
+fun StudiesPanel(
+    caseId: Int?,
+    viewModel: MedicalViewModel,
+    studies: List<Study>
+) {
+    var showAddDialog by remember { mutableStateOf(false) }
+    var studyName by remember { mutableStateOf("") }
+    var studyUrl by remember { mutableStateOf("") }
+    val context = LocalContext.current
 
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        items(studies) { study ->
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = Color.White),
-                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-            ) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
+    if (showAddDialog) {
+        AlertDialog(
+            onDismissRequest = { showAddDialog = false },
+            title = { Text("Agregar Estudio / PDF") },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    OutlinedTextField(
+                        value = studyName,
+                        onValueChange = { studyName = it },
+                        label = { Text("Nombre del estudio (ej. Radiografía de Tórax)") },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    OutlinedTextField(
+                        value = studyUrl,
+                        onValueChange = { studyUrl = it },
+                        label = { Text("URL / Ruta del archivo (ej. estudio.pdf)") },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        if (studyName.isBlank()) {
+                            Toast.makeText(context, "Ingresa el nombre del estudio", Toast.LENGTH_SHORT).show()
+                        } else {
+                            val newStudy = Study(
+                                nombre = studyName.trim(),
+                                url = if (studyUrl.isBlank()) "estudio.pdf" else studyUrl.trim()
+                            )
+                            viewModel.addStudyToCase(caseId, newStudy)
+                            Toast.makeText(context, "Estudio agregado exitosamente", Toast.LENGTH_SHORT).show()
+                            studyName = ""
+                            studyUrl = ""
+                            showAddDialog = false
+                        }
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1A8F5A))
                 ) {
-                    Icon(Icons.Default.PictureAsPdf, contentDescription = null, tint = Color.Red, modifier = Modifier.size(48.dp))
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(study.nombre, textAlign = TextAlign.Center, style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold)
+                    Text("Agregar")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showAddDialog = false }) {
+                    Text("Cancelar")
                 }
             }
+        )
+    }
+
+    Box(modifier = Modifier.fillMaxSize()) {
+        if (studies.isEmpty()) {
+            EmptyState("No hay estudios disponibles", Icons.Default.FolderOff)
+        } else {
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                contentPadding = PaddingValues(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                modifier = Modifier.fillMaxSize()
+            ) {
+                items(studies) { study ->
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = CardDefaults.cardColors(containerColor = Color.White),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(16.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Icon(Icons.Default.PictureAsPdf, contentDescription = null, tint = Color.Red, modifier = Modifier.size(48.dp))
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(study.nombre, textAlign = TextAlign.Center, style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold)
+                        }
+                    }
+                }
+            }
+        }
+
+        // Botón de + para agregar documento / estudio PDF
+        FloatingActionButton(
+            onClick = { showAddDialog = true },
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(16.dp),
+            containerColor = Color(0xFF1A8F5A),
+            contentColor = Color.White
+        ) {
+            Icon(Icons.Default.Add, contentDescription = "Agregar Estudio")
         }
     }
 }
@@ -499,23 +579,23 @@ fun RealisticWaveform(modifier: Modifier, color: Color, type: WaveType, bpm: Int
         val height = size.height
         val centerY = height / 2
         val path = Path()
-        
+
         path.moveTo(0f, centerY)
-        
+
         // Frecuencia de pulsos basada en BPM (o frecuencia respiratoria)
         val rate = if (type == WaveType.CO2) bpm.coerceAtLeast(1) else bpm.coerceAtLeast(1)
         val pulsesPerSecond = rate / 60f
         val displaySeconds = if (type == WaveType.CO2) 10f else 3f
         val pulseWidth = width / (pulsesPerSecond * displaySeconds)
-        
+
         for (x in 0..width.toInt() step 2) {
             val nx = x / width
             val sweepX = (nx + phase) % 1.0f
-            
+
             // Simular pulso recurrente
             val t = (sweepX * width) % pulseWidth
             val nt = t / pulseWidth
-            
+
             val yOffset = when (type) {
                 WaveType.EKG -> calculateEkgOffset(nt, height)
                 WaveType.SPO2 -> calculateSpo2Offset(nt, height)
@@ -523,11 +603,11 @@ fun RealisticWaveform(modifier: Modifier, color: Color, type: WaveType, bpm: Int
                 WaveType.CO2 -> calculateCo2Offset(nt, height)
                 WaveType.EEG -> calculateEegOffset(nt, height)
             }
-            
+
             if (x == 0) path.moveTo(x.toFloat(), centerY + yOffset)
             else path.lineTo(x.toFloat(), centerY + yOffset)
         }
-        
+
         drawPath(path, color, style = Stroke(width = 1.5.dp.toPx()))
     }
 }

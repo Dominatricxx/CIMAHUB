@@ -3,6 +3,8 @@ package com.example.cimahub
 import android.os.Bundle
 import android.graphics.ColorMatrixColorFilter
 import android.graphics.Paint
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -29,13 +31,13 @@ import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.cimahub.data.repository.MedicalRepository
 import com.example.cimahub.ui.components.CaseDetailModal
 import com.example.cimahub.ui.components.UabcHyperDynamicBackground
 import com.example.cimahub.ui.navigation.NavGraph
@@ -49,6 +51,11 @@ import kotlinx.coroutines.launch
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        Thread.setDefaultUncaughtExceptionHandler { thread, throwable ->
+            Log.e("CIMAHUB_CRASH", "Excepción no capturada en ${thread.name}", throwable)
+        }
+
         enableEdgeToEdge()
         setContent {
             CIMAHUBTheme {
@@ -67,6 +74,8 @@ fun MainScreen() {
     val selectedCase by viewModel.selectedCase.collectAsState()
     val isLoggedIn by viewModel.isLoggedIn.collectAsState()
     val userRole by viewModel.userRole.collectAsState()
+    val isOffline by viewModel.isOffline.collectAsState()
+    val context = LocalContext.current
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -121,10 +130,29 @@ fun MainScreen() {
     CaseDetailModal(
         selectedCase = selectedCase,
         visionMatrix = visionMatrix,
+        isTeacher = userRole == UserRole.Teacher,
         onDismiss = { viewModel.selectCase(null) },
         onStartSimulation = { caseId ->
             viewModel.selectCase(null)
             navController.navigate(Screen.Simulation.createRoute(caseId))
+        },
+        onEditCase = { caseId ->
+            viewModel.selectCase(null)
+            navController.navigate(Screen.AddCase.createRoute(caseId))
+        },
+        onDeleteCase = { caseId ->
+            if (isOffline) {
+                Toast.makeText(context, "Se requiere conexión a internet para eliminar datos", Toast.LENGTH_LONG).show()
+            } else {
+                viewModel.deleteCase(caseId) { success ->
+                    if (success) {
+                        viewModel.selectCase(null)
+                        Toast.makeText(context, "Registro de caso eliminado exitosamente", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(context, "Error al eliminar el caso", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
         }
     )
 
@@ -161,7 +189,7 @@ fun MainScreen() {
                         
                         // Header del Drawer
                         Column(modifier = Modifier.padding(24.dp)) {
-                                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
                                 Text("CI", color = Color(0xFF1A8F5A), fontSize = 32.sp, fontWeight = FontWeight.Black)
                                 Text("MED", color = Color(0xFFFFB300), fontSize = 24.sp, fontWeight = FontWeight.Bold)
                             }
